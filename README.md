@@ -1,7 +1,7 @@
 # Extended-Cepstral-Distance
 A time series distance measure for efficient clustering of input/output signals by their underlying dynamics
 ## Summary
-The code in this repository represents a minimal working example in Matlab for the simulations in the manuscript "A time series distance measure for efficient  clustering of input/output signals by their underlying dynamics, a preprint of which can be found on https://arxiv.org/abs/1703.01923, by Oliver Lauwers and Bart De Moor, which deals with the question of finding a distance measure for time series that captures aspects of the underlying dynamics of the time series. This manuscript has been sent in to be considered for publication to the IEEE Control Systems letters (in affiliation with the 2017 IEEE Conference on Decision and Control).
+The code in this repository represents a minimal working example in Matlab for the simulations in the manuscript "A time series distance measure for efficient  clustering of input/output signals by their underlying dynamics, a preprint of which can be found on [arXiv](https://arxiv.org/abs/1703.01923), by Oliver Lauwers and Bart De Moor, which deals with the question of finding a distance measure for time series that captures aspects of the underlying dynamics of the time series. This manuscript has been sent in to be considered for publication to the IEEE Control Systems letters (in affiliation with the 2017 IEEE Conference on Decision and Control).
 
 The simulations consist of the following steps:
  - Constructing two electrical circuits (generateelectriccircuits.m)
@@ -15,4 +15,4 @@ The experiments were run by the scrip "runExperiments.m". The different function
 Bear in mind that this code is not meant as a fully working software package, but serves merely as an illustration accompanying the manuscript mentioned earlier.
 
 ##Reference
-When using this code or discussing results of the extended cepstral distance measure, please refer to https://arxiv.org/abs/1703.01923.
+When using this code or discussing results of the extended cepstral distance measure, please refer to [this preprint](https://arxiv.org/abs/1703.01923).
