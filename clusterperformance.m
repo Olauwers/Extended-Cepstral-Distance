@@ -17,7 +17,6 @@ for r = 1:repetitions
     normoutputs = zscore(outputs')';
     norminputs = zscore(inputs')';
     [n,k] = size(outputs);
-    cepstrumcutoff = floor(size(pwelch(inputs(1,:),[],[],'centered'),1)/2);
   
     disp('Start Euclidean Distance')
     
@@ -53,14 +52,25 @@ for r = 1:repetitions
     
     disp('Start Original Cepstral Distance')
     tic
-    OutputCeps = zeros(n,size(pwelch(outputs(1,:),[],[],'centered'),1));
     DistCepstral = zeros(n,n);
-    weights = 0:1:cepstrumcutoff-1;
 
-    for i = 1:n
-
-        OutputCeps(i,:) = ifftshift(log(pwelch(outputs(i,:),[],[],'centered')));
-    end
+     if (k > 2^7)
+        OutputCeps = zeros(n,size(ifft(log(pwelch(outputs(1,:),[],[],'twosided')),'symmetric'),1));
+        cepstrumcutoff = floor(size(ifft(log(pwelch(outputs(1,:),[],[],'twosided')),'symmetric'),1));
+        weights = 1:1:cepstrumcutoff-1;
+        for i = 1:n
+            OutputCeps(i,:) = ifft(log(pwelch(outputs(i,:),[],[],'twosided')),'symmetric');
+        end
+        disp('Welch')
+     else
+        OutputCeps = zeros(n,size(ifft(log(pmtm(outputs(1,:),'twosided')),'symmetric'),1));
+        cepstrumcutoff = floor(size(ifft(log(pmtm(outputs(1,:),'twosided')),'symmetric'),1));
+        weights = 1:1:cepstrumcutoff-1;
+            for i = 1:n
+            OutputCeps(i,:) = ifft(log(pmtm(outputs(i,:),'twosided')),'symmetric');
+            end
+        disp('mtm')
+     end
 
     clear i
 
@@ -68,7 +78,7 @@ for r = 1:repetitions
 
         for j = 1:i-1
 
-            DistCepstral(i,j) = weights*((OutputCeps(i,1:cepstrumcutoff)' - OutputCeps(j,1:cepstrumcutoff)').^2);
+            DistCepstral(i,j) = weights*((OutputCeps(i,2:cepstrumcutoff)' - OutputCeps(j,2:cepstrumcutoff)').^2);
             DistCepstral(j,i) = DistCepstral(i,j);
         end
         disp(['Size 2^' num2str(log2(N)) ' Repetition: ' num2str(r) '/' num2str(repetitions)  ' Cepstral: ' num2str(i) '/' num2str(n)])
@@ -83,16 +93,29 @@ for r = 1:repetitions
     
     disp('Start Extended Cepstral Distance')
     tic
-    InputCeps = zeros(n,size(pwelch(inputs(1,:),[],[],'centered'),1));
-    OutputCeps = zeros(n,size(pwelch(outputs(1,:),[],[],'centered'),1));
     DistExtended = zeros(n,n);
-    weights = 1:1:cepstrumcutoff-1;
-
-    for i = 1:n
-
-        InputCeps(i,:) = ifftshift(log(pwelch(inputs(i,:),[],[],'centered')));
-        OutputCeps(i,:) = ifftshift(log(pwelch(outputs(i,:),[],[],'centered')));
-    end
+    
+     if (k > 2^7)
+        InputCeps = zeros(n,size(ifft(log(pwelch(inputs(1,:),[],[],'twosided')),'symmetric'),1));
+        OutputCeps = zeros(n,size(ifft(log(pwelch(outputs(1,:),[],[],'twosided')),'symmetric'),1));
+        cepstrumcutoff = floor(size(ifft(log(pwelch(outputs(1,:),[],[],'twosided')),'symmetric'),1));
+        weights = 1:1:cepstrumcutoff-1;
+        for i = 1:n
+            InputCeps(i,:) = ifft(log(pwelch(inputs(i,:),[],[],'twosided')),'symmetric');
+            OutputCeps(i,:) = ifft(log(pwelch(outputs(i,:),[],[],'twosided')),'symmetric');
+        end
+        disp('Welch')
+     else
+        InputCeps = zeros(n,size(ifft(log(pmtm(inputs(1,:),'twosided')),'symmetric'),1));
+        OutputCeps = zeros(n,size(ifft(log(pmtm(outputs(1,:),'twosided')),'symmetric'),1));
+        cepstrumcutoff = floor(size(ifft(log(pmtm(outputs(1,:),'twosided')),'symmetric'),1));
+        weights = 1:1:cepstrumcutoff-1;
+            for i = 1:n
+            InputCeps(i,:) = ifft(log(pmtm(inputs(i,:),'twosided')),'symmetric');
+            OutputCeps(i,:) = ifft(log(pmtm(outputs(i,:),'twosided')),'symmetric');
+            end
+        disp('mtm')
+     end
 
     for i = 1:n
 
