@@ -14,5 +14,5 @@ The experiments were run by the scrip "runExperiments.m". The different function
 
 Bear in mind that this code is not meant as a fully working software package, but serves merely as an illustration accompanying the manuscript mentioned earlier.
 
-##Reference
+## Reference
 When using this code or discussing results of the extended cepstral distance measure, please refer to [this preprint](https://arxiv.org/abs/1703.01923).
