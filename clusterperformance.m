@@ -21,8 +21,12 @@ for r = 1:repetitions
     disp('Start Euclidean Distance')
     
     tic
-    DistEuclid = squareform(pdist(normoutputs));
-    VectorEuclid = squareform(DistEuclid);
+    DistOutput = squareform(pdist(normoutputs));
+    DistInput = squareform(pdist(norminputs));
+% Change alpha to a number between 0 and 1 to explicitly add a cost term involving the input to the Euclidean distance.
+    alpha = 0;
+    VectorEuclid = squareform((1-alpha)*DistOutput + alpha*DistInput);
+    
     Zeuclid = linkage(VectorEuclid);
     % ceuclid = cluster(Zeuclid,'cutoff',10^3,'criterion','distance');
     ceuclid = cluster(Zeuclid,'maxclust',clusters);
@@ -41,8 +45,25 @@ for r = 1:repetitions
                 end
                 disp(['Size 2^' num2str(log2(N)) ' Repetition: ' num2str(r) '/' num2str(repetitions)  ' LBKeogh: ' num2str(i) '/' num2str(n)])
             end
-
         VectorLBKeogh = squareform(DistLBKeogh);
+        
+% Alternatively, change the previous with the following to add the inputs in explicitly.
+% This was not done by default as it increases computation time.
+%         alpha = 0.5;
+%         DistLBKeoghOutputs = zeros(n,n);
+%         DistLBKeoghInputs = zeros(n,n);
+%         w=floor(k*(5/100));
+%             for i = 1:n
+%                 for j = 1:i-1
+%                      DistLBKeoghOutputs(i,j) = dLBKeogh(normoutputs(i,:)', normoutputs(j,:)', 1);
+%                      DistLBKeoghOutputs(j,i) = DistLBKeoghOutputs(i,j);
+%                      DistLBKeoghInputs(i,j) = dLBKeogh(norminputs(i,:)', norminputs(j,:)', 1);
+%                      DistLBKeoghInputs(j,i) = DistLBKeoghInputs(i,j);
+%                 end
+%                 disp(['Size 2^' num2str(log2(N)) ' Repetition: ' num2str(r) '/' num2str(repetitions)  ' LBKeogh: ' num2str(i) '/' num2str(n)])
+%             end
+%         VectorLBKeogh = squareform((1-alpha)*DistLBKeoghOutputs + alpha*DistLBKeoghInputs);
+
         ZLBKeogh = linkage(VectorLBKeogh);
         % cLBKeogh = cluster(ZLBKeogh,'cutoff',10^3,'criterion','distance');
         cLBKeogh = cluster(ZLBKeogh,'maxclust',clusters);
