@@ -12,6 +12,8 @@ The simulations consist of the following steps:
 
 The experiments were run by the scrip "runExperiments.m". The different functions are then nested in each other.
 
+A tutorial was added in the form of a Matlab LiveScript document and accompanying functions. This tutorial looks at non-linear perturbations of the electric circuits in the manuscript, by adding a saturating inductor. The user is encouraged to try out different values and types of non-linearities. The LiveScript is contained in Nonlinear perturbation\Non-linear loads. The other files in that folder contain functions used by the LiveScript. Their use is explained in the LiveScript.
+
 Bear in mind that this code is not meant as a fully working software package, but serves merely as an illustration accompanying the manuscript mentioned earlier.
 
 ## Reference
